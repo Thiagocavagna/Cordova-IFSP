@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exemplo de Página com Bootstrap</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>        
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">MeuApp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Posts <span class="sr-only">(atual)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4 content" style="overflow: auto; height: 300px" id="minhaDiv">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="postNumber">Número do Post</label>
+                    <input type="number" class="form-control" id="postNumber" placeholder="Digite o número do post">
+                </div>
+                <button class="btn btn-primary" id="showPostButton">Mostrar</button>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h1 id="postTitle">Título do Post</h1>
+                <p id="postBody">Corpo do Post</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('showPostButton').addEventListener('click', function() {
+            var postNumber = document.getElementById('postNumber').value;
+            var url = `https://jsonplaceholder.typicode.com/posts/${postNumber}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('postTitle').innerText = data.title;
+                    document.getElementById('postBody').innerText = data.body;
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar o post:', error);
+                    document.getElementById('postTitle').innerText = 'Erro ao buscar o post';
+                    document.getElementById('postBody').innerText = '';
+                });
+        });
+        
+        let minhaDiv = document.getElementById('minhaDiv');
+        
+        minhaDiv.addEventListener('scrollend', function() {            
+            document.getElementById('postNumber').value = '';
+            document.getElementById('postTitle').innerText = 'Título do Post';
+            document.getElementById('postBody').innerText = 'Corpo do Post';
+            
+        });
+    </script>
+</body>
+</html>
