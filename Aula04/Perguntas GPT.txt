@@ -1,0 +1,7 @@
+Perguntas GPT:
+
+Aja como um desenvolvedor PHP. Gostaria que me desse o código de uma API em PHP, a qual receba peso e altura de uma pessoa, faça o cálculo do IMC e o retorne. Além disos, ele deve retornar quantos kg a pessoa de perder para ficar no peso saudável, isto é, abaixo de 24,9.
+Resposta: código php anexado.
+
+Certo, agora crie uma página utilizando HTML, CSS e JAVASCRIPT que consuma essa API em PHP, a qual está em localhost, utilizando o XAMPP. A URL para consumo é http://localhost/imc_calculator/index.php
+Resposta: código html, css e js anexado.
