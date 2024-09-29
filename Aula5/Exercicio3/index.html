@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capture and Upload Photo</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Aula 5 - Exercício 3</h1>
+    <button onclick="takePhoto()">Capture Photo</button>
+    <img id="photo" alt="Your photo will appear here">
+
+    <script src="cordova.js"></script>
+    <script>
+        function takePhoto() {
+            navigator.camera.getPicture(onPhotoSuccess, onPhotoFail, {
+                quality: 50,
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.CAMERA
+            });
+        }
+
+        function onPhotoSuccess(imageData) {
+            var photoElement = document.getElementById('photo');
+            photoElement.src = "data:image/jpeg;base64," + imageData;
+            uploadPhotoToServer(imageData);
+        }
+
+        function onPhotoFail(message) {
+            alert('Failed to capture photo: ' + message);
+        }
+
+        function uploadPhotoToServer(imageData) {
+            var xhr = new XMLHttpRequest();
+            var url = 'upload.php';
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+            var postData = 'image=' + encodeURIComponent(imageData);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        alert('Photo uploaded successfully!');
+                    } else {
+                        alert('Error uploading photo.');
+                    }
+                }
+            };
+            xhr.send(postData);
+        }
+    </script>
+</body>
+</html>
