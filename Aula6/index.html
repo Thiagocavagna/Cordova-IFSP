@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima Atual</title>
+    <style>
+        #weather-card {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Clima Atual</h1>
+    <button id="getLocationBtn">Obter Localização e Buscar Clima</button>
+
+    <div id="weather-card">
+        <h2>Informações Climáticas</h2>
+        <p id="temperature">Temperatura: --</p>
+    </div>
+
+    <script src="cordova.js"></script>
+    <script>
+        document.getElementById('getLocationBtn').addEventListener('click', function() {
+            navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        });
+
+        function onSuccess(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const temp = data.current_weather.temperature;
+
+                    document.getElementById('temperature').innerText = `Temperatura: ${temp}°C`;
+                    document.getElementById('weather-card').style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar dados do clima:', error);
+                });
+        }
+
+        function onError(error) {
+            alert('Erro ao obter localização: ' + error.message);
+        }
+    </script>
+</body>
+</html>
