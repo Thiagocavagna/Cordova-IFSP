@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Tema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <h1>Configurar Tema e Nome</h1>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nome do Usuário</label>
+            <input type="text" class="form-control" id="name" placeholder="Digite seu nome">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Escolha o Tema:</label>
+            <div>
+                <input type="radio" id="light" name="theme" value="light" checked>
+                <label for="light">Claro</label>
+            </div>
+            <div>
+                <input type="radio" id="dark" name="theme" value="dark">
+                <label for="dark">Escuro</label>
+            </div>
+        </div>
+        <button id="saveButton" class="btn btn-primary">Salvar</button>
+        <h2 id="greeting" class="mt-4"></h2>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var nameInput = document.getElementById('name');
+            var lightTheme = document.getElementById('light');
+            var darkTheme = document.getElementById('dark');
+            var greeting = document.getElementById('greeting');
+
+            var savedName = localStorage.getItem('username');
+            var savedTheme = localStorage.getItem('theme');
+
+            if (savedName) {
+                nameInput.value = savedName;
+                greeting.textContent = 'Bem-vindo, ' + savedName + '!';
+            }
+
+            if (savedTheme) {
+                if (savedTheme === 'dark') {
+                    darkTheme.checked = true;
+                    document.body.classList.add('bg-dark', 'text-white');
+                } else {
+                    lightTheme.checked = true;
+                    document.body.classList.remove('bg-dark', 'text-white');
+                }
+            }
+
+            document.getElementById('saveButton').onclick = function() {
+                var username = nameInput.value;
+                var theme = document.querySelector('input[name="theme"]:checked').value;
+
+                localStorage.setItem('username', username);
+                localStorage.setItem('theme', theme);
+
+                greeting.textContent = 'Bem-vindo, ' + username + '!';
+                if (theme === 'dark') {
+                    document.body.classList.add('bg-dark', 'text-white');
+                } else {
+                    document.body.classList.remove('bg-dark', 'text-white');
+                }
+            };
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
